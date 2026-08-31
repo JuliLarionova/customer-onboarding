@@ -1,4 +1,4 @@
-package com.lar.customer_onboarding;
+package com.lar.customeronboarding;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

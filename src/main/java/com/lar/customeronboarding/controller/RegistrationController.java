@@ -1,6 +1,6 @@
-package com.lar.customer_onboarding.controller;
+package com.lar.customeronboarding.controller;
 
-import com.lar.customer_onboarding.service.CustomerRegistrationService;
+import com.lar.customeronboarding.service.CustomerRegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

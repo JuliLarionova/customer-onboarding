@@ -1,4 +1,4 @@
-package com.lar.customer_onboarding;
+package com.lar.customeronboarding;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

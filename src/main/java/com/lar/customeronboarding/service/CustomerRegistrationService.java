@@ -1,4 +1,4 @@
-package com.lar.customer_onboarding.service;
+package com.lar.customeronboarding.service;
 
 import org.springframework.stereotype.Service;
 
