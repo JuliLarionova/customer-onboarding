@@ -1,3 +1,20 @@
 spring:
   application:
     name: customer-onboarding
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/customer_onboarding
+    username: customer_onboarding_app
+    password: localdev
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.example.randombank: DEBUG
