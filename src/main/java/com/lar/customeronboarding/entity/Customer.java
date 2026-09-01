@@ -12,7 +12,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "customer")
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
@@ -60,5 +59,4 @@ public class Customer {
     public int hashCode() {
         return getClass().hashCode();
     }
-
 }

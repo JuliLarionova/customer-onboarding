@@ -6,7 +6,6 @@ import lombok.*;
 
 @Embeddable
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
