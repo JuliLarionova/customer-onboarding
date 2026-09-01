@@ -62,7 +62,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: country_code
-                  type: CHAR(2)
+                  type: VARCHAR(2)
                   constraints:
                     nullable: false
               - column:
