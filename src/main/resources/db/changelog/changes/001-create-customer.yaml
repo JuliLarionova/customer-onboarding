@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 001-create-customer
-      author: ryok
+      author: yulialar
       changes:
         - createTable:
             tableName: customer

@@ -1,4 +1,4 @@
-package com.lar.customeronboarding.support;
+package com.lar.customeronboarding.support.integrationtest;
 
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;

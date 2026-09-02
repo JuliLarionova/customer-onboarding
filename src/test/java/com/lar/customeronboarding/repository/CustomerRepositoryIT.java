@@ -1,16 +1,13 @@
 package com.lar.customeronboarding.repository;
 
-import com.lar.customeronboarding.entity.Address;
-import com.lar.customeronboarding.entity.Customer;
-import com.lar.customeronboarding.support.AbstractPostgresIntegrationTest;
+import com.lar.customeronboarding.support.integrationtest.AbstractPostgresIntegrationTest;
+import com.lar.customeronboarding.support.testdata.CustomerTestDataProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.dao.DataIntegrityViolationException;
-
-import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +24,10 @@ public class CustomerRepositoryIT extends AbstractPostgresIntegrationTest {
 
     @Test
     void savesAndAssignsGeneratedFields() {
-        var saved = customerRepository.saveAndFlush(buildCustomer("jsmith"));
+        var saved = customerRepository.saveAndFlush(
+                CustomerTestDataProvider.customerBuilder()
+                        .username("jsmith")
+                        .build());
 
         assertAll(
                 () -> assertNotNull(saved.getId()),
@@ -38,15 +38,25 @@ public class CustomerRepositoryIT extends AbstractPostgresIntegrationTest {
 
     @Test
     void rejectsDuplicateUsername() {
-        customerRepository.saveAndFlush(buildCustomer("taken"));
+        customerRepository.saveAndFlush(
+                CustomerTestDataProvider.customerBuilder()
+                        .username("taken")
+                        .build());
 
-        assertThatThrownBy(() -> customerRepository.saveAndFlush(buildCustomer("taken")))
+        assertThatThrownBy(() -> customerRepository.saveAndFlush(
+                CustomerTestDataProvider.customerBuilder()
+                        .username("taken")
+                        .build()))
                 .isInstanceOf(DataIntegrityViolationException.class);
     }
 
     @Test
     void persistedCustomerRoundTripsAllFields() {
-        var saved = customerRepository.saveAndFlush(buildCustomer("jsmith"));
+        var saved = customerRepository.saveAndFlush(
+                CustomerTestDataProvider.customerBuilder()
+                        .username("taken")
+                        .build());
+
         entityManager.clear();
 
         var found = customerRepository.findById(saved.getId()).orElseThrow();
@@ -61,23 +71,6 @@ public class CustomerRepositoryIT extends AbstractPostgresIntegrationTest {
                 () -> assertEquals(expected.getCity(), actual.getCity()),
                 () -> assertEquals(expected.getCountryCode(), actual.getCountryCode())
         );
-    }
-
-    private Customer buildCustomer(String username) {
-        return Customer.builder()
-                .username(username)
-                .password("generated")
-                .firstName("Jane")
-                .lastName("Smith")
-                .dateOfBirth(LocalDate.of(1990, 1, 1))
-                .address(Address.builder()
-                        .street("Damrak")
-                        .houseNumber("1")
-                        .postalCode("1012LG")
-                        .city("Amsterdam")
-                        .countryCode("NL")
-                        .build())
-                .build();
     }
 
 }
