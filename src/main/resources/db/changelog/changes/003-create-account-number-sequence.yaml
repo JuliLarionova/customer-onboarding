@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-account-number-sequence
+      author: yulialar
+      changes:
+        - createSequence:
+            sequenceName: account_number_seq
+            startValue: 1
+            incrementBy: 1
+            maxValue: 9999999999
+            cacheSize: 50
