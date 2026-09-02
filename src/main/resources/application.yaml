@@ -21,3 +21,9 @@ server:
 logging:
   level:
     com.example.randombank: DEBUG
+
+app:
+  registration:
+    allowed-countries:
+      - NL
+      - BE

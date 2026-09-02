@@ -51,7 +51,7 @@ public class CustomerRepositoryIT extends AbstractPostgresIntegrationTest {
     }
 
     @Test
-    void persistedCustomerRoundTripsAllFields() {
+    void persistedCustomerSavedAllFields() {
         var saved = customerRepository.saveAndFlush(
                 CustomerTestDataProvider.customerBuilder()
                         .username("taken")
