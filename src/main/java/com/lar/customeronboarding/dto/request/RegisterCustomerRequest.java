@@ -1,6 +1,7 @@
 package com.lar.customeronboarding.dto.request;
 
 import com.lar.customeronboarding.dto.AddressDto;
+import com.lar.customeronboarding.validation.MinimumAge;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
@@ -21,10 +22,12 @@ public record RegisterCustomerRequest(
         String firstName,
 
         @NotBlank
-        @Size(max = 100) String lastName,
+        @Size(max = 100)
+        String lastName,
+
         @NotNull
         @Past
-       // @MinimumAge not yet implemented
+        @MinimumAge
         LocalDate dateOfBirth,
 
         @NotNull

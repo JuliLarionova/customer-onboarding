@@ -7,7 +7,6 @@ import java.time.LocalDate;
 @Builder
 public record CustomerDto(
         String username,
-        String password,
         String firstName,
         String lastName,
         LocalDate dateOfBirth,

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-@ComponentScan("com.lar")
 public class CustomerOnboardingApplication {
 
 	public static void main(String[] args) {

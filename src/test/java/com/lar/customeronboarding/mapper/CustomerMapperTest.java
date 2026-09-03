@@ -11,17 +11,17 @@ public class CustomerMapperTest {
 
     private final CustomerMapper mapper = new CustomerMapperImpl();
 
-    private static final String PASSWORD = "PASSWORD";
+//    private static final String PASSWORD = "PASSWORD";
+//    private static final UUID CUSTOMER_ID = UUID.fromString("6f1c2a4e-9b3d-4c5a-8e7f-1a2b3c4d5e6f");
 
     @Test
     void mapsRequestAndPasswordToDto() {
         var request = registerRequestBuilder().build();
 
-        var dto = mapper.toDto(request, PASSWORD);
+        var dto = mapper.toDto(request);
 
         assertAll(
                 () -> assertEquals(request.username(), dto.username()),
-                () -> assertEquals(PASSWORD, dto.password()),
                 () -> assertEquals(request.firstName(), dto.firstName()),
                 () -> assertEquals(request.lastName(), dto.lastName()),
                 () -> assertEquals(request.dateOfBirth(), dto.dateOfBirth())
@@ -31,7 +31,7 @@ public class CustomerMapperTest {
     @Test
     void mapsNestedAddressToDto() {
         var request = registerRequestBuilder().build();
-        var dto = mapper.toDto(request, PASSWORD);
+        var dto = mapper.toDto(request);
 
         var address = dto.address();
 
@@ -49,14 +49,14 @@ public class CustomerMapperTest {
     void mapsDtoToEntityWithoutGeneratedFields() {
         var dto = customerDtoBuilder().build();
 
-        var customer = mapper.toEntity(dto);
+        var customer = mapper.toEntity(dto, PASSWORD);
 
         assertAll(
                 () -> assertNull(customer.getId()),
                 () -> assertNull(customer.getCreatedAt()),
                 () -> assertNull(customer.getUpdatedAt()),
                 () -> assertEquals(dto.username(), customer.getUsername()),
-                () -> assertEquals(dto.password(), customer.getPassword()),
+                () -> assertEquals(PASSWORD, customer.getPassword()),
                 () -> assertEquals(dto.firstName(), customer.getFirstName()),
                 () -> assertEquals(dto.lastName(), customer.getLastName()),
                 () -> assertEquals(dto.dateOfBirth(), customer.getDateOfBirth())
@@ -66,7 +66,7 @@ public class CustomerMapperTest {
     @Test
     void mapsNestedAddressToEntity() {
         var dto = customerDtoBuilder().build();
-        var customer = mapper.toEntity(dto);
+        var customer = mapper.toEntity(dto, PASSWORD);
         var address = customer.getAddress();
 
         assertAll(
@@ -76,20 +76,6 @@ public class CustomerMapperTest {
                 () -> assertEquals(dto.address().postalCode(), address.getPostalCode()),
                 () -> assertEquals(dto.address().city(), address.getCity()),
                 () -> assertEquals(dto.address().countryCode(), address.getCountryCode())
-        );
-    }
-
-    @Test
-    void mapsEntityToResponse() {
-        var id = UUID.randomUUID();
-        var entity = customerBuilder().id(id).build();
-
-        var response = mapper.toResponse(entity);
-
-        assertAll(
-                () -> assertEquals(entity.getId(), response.customerId()),
-                () -> assertEquals(entity.getUsername(), response.username()),
-                () -> assertEquals(entity.getPassword(), response.password())
         );
     }
 
@@ -110,10 +96,37 @@ public class CustomerMapperTest {
     @Test
     void returnsNullForNullInput() {
         assertAll(
-                () -> assertNull(mapper.toDto(null, null)),
-                () -> assertNull(mapper.toEntity(null)),
+                () -> assertNull(mapper.toDto(null)),
+                () -> assertNull(mapper.toEntity(null, null)),
                 () -> assertNull(mapper.toResponse(null)),
                 () -> assertNull(mapper.toAddress(null))
         );
     }
+
+    @Test
+    void mapsEntityToRegisteredDto() {
+        var customer = customerBuilder().id(CUSTOMER_ID).build();
+
+        var registered = mapper.toRegisteredDto(customer);
+
+        assertAll(
+                () -> assertEquals(customer.getId(), registered.id()),
+                () -> assertEquals(customer.getUsername(), registered.username()),
+                () -> assertEquals(customer.getPassword(), registered.password())
+        );
+    }
+
+    @Test
+    void mapsRegisteredDtoToResponse() {
+        var registered = registeredCustomerDtoBuilder().build();
+
+        var response = mapper.toResponse(registered);
+
+        assertAll(
+                () -> assertEquals(registered.id(), response.customerId()),
+                () -> assertEquals(registered.username(), response.username()),
+                () -> assertEquals(registered.password(), response.password())
+        );
+    }
+
 }

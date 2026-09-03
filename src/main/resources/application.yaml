@@ -6,6 +6,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/customer_onboarding
     username: customer_onboarding_app
     password: localdev
+    hikari:
+      maximum-pool-size: 2
+      connection-timeout: 3000
 
   jpa:
     hibernate:
@@ -20,7 +23,7 @@ server:
 
 logging:
   level:
-    com.example.randombank: DEBUG
+    com.lar.customeronboarding: DEBUG
 
 app:
   registration:

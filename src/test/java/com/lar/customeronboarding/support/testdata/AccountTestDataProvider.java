@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public final class AccountTestDataProvider {
 
-    private static final String IBAN = "NL91RBNK0417164300";
+    public static final String IBAN = "NL91RBNK0417164300";
 
     public static Account.AccountBuilder accountBuilder(UUID customerId) {
         return Account.builder()
