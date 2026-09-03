@@ -10,5 +10,9 @@ import java.util.Set;
 @ConfigurationProperties(prefix = "app.registration")
 @Validated
 public record RegistrationProperties(
-        @NotEmpty Set<@Pattern(regexp = "^[A-Z]{2}$") String> allowedCountries
+
+        @NotEmpty
+        Set<@Pattern(regexp = "^[A-Z]{2}$") String>
+        allowedCountries
+
 ) {}

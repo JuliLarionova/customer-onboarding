@@ -4,13 +4,18 @@ import com.lar.customeronboarding.dto.CustomerDto;
 import com.lar.customeronboarding.exception.custom.CountryNotAllowedException;
 import com.lar.customeronboarding.exception.custom.UsernameAlreadyExistsException;
 import com.lar.customeronboarding.mapper.CustomerMapperImpl;
+import com.lar.customeronboarding.security.JwtProperties;
+import com.lar.customeronboarding.security.SecurityConfig;
 import com.lar.customeronboarding.service.RegistrationService;
+import com.lar.customeronboarding.support.testdata.CustomerTestDataProvider;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -27,7 +32,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RegistrationController.class)
-@Import(CustomerMapperImpl.class)
+@Import({CustomerMapperImpl.class, SecurityConfig.class})
+@EnableConfigurationProperties(JwtProperties.class)
+@TestPropertySource(properties = {
+        "app.security.jwt.secret=" + CustomerTestDataProvider.JWT_TEST_SECRET,
+        "app.security.jwt.time-to-live=15m"
+})
 class RegistrationControllerTest {
 
     private static final String REGISTER_URL = "/api/v1/register";

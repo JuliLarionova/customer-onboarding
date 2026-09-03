@@ -2,17 +2,12 @@ package com.lar.customeronboarding.mapper;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
 import static com.lar.customeronboarding.support.testdata.CustomerTestDataProvider.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CustomerMapperTest {
 
     private final CustomerMapper mapper = new CustomerMapperImpl();
-
-//    private static final String PASSWORD = "PASSWORD";
-//    private static final UUID CUSTOMER_ID = UUID.fromString("6f1c2a4e-9b3d-4c5a-8e7f-1a2b3c4d5e6f");
 
     @Test
     void mapsRequestAndPasswordToDto() {

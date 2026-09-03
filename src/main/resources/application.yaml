@@ -30,3 +30,7 @@ app:
     allowed-countries:
       - NL
       - BE
+  security:
+    jwt:
+      secret: ${JWT_SECRET:0123456789abcdef0123456789abcdef}
+      time-to-live: 15m

@@ -13,6 +13,8 @@ import java.util.UUID;
 
 public final class CustomerTestDataProvider {
 
+    public static final String JWT_TEST_SECRET = "0123456789abcdef0123456789abcdef";
+
     public static final UUID CUSTOMER_ID = UUID.fromString("6f1c2a4e-9b3d-4c5a-8e7f-1a2b3c4d5e6f");
     public static final String USERNAME = "JSmith";
     public static final String FIRST_NAME = "Jane";

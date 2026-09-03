@@ -1,14 +1,11 @@
-package com.lar.customeronboarding.service;
+package com.lar.customeronboarding.util;
 
-import com.lar.customeronboarding.util.SecureRandomPasswordGenerator;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SecuredRandomPasswordGeneratorTest {
-
-    //TODO: fix magic numbers and strings in tests
 
     private final SecureRandomPasswordGenerator generator = new SecureRandomPasswordGenerator();
 

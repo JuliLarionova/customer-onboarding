@@ -1,7 +1,6 @@
-package com.lar.customeronboarding.service;
+package com.lar.customeronboarding.util;
 
 import com.lar.customeronboarding.repository.AccountNumberRepository;
-import com.lar.customeronboarding.util.IbanGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

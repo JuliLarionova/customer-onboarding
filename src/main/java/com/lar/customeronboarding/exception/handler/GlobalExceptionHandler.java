@@ -1,6 +1,7 @@
 package com.lar.customeronboarding.exception.handler;
 
 import com.lar.customeronboarding.exception.custom.CountryNotAllowedException;
+import com.lar.customeronboarding.exception.custom.InvalidCredentialsException;
 import com.lar.customeronboarding.exception.custom.UsernameAlreadyExistsException;
 import com.lar.customeronboarding.exception.error.ApiError;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CountryNotAllowedException.class)
     public ResponseEntity<ApiError> handleCountryNotAllowed(CountryNotAllowedException ex) {
         return build(HttpStatus.UNPROCESSABLE_CONTENT, ex.getMessage(), ex, null);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ApiError> handleInvalidCredentials(InvalidCredentialsException ex) {
+        return build(HttpStatus.UNAUTHORIZED, ex.getMessage(), ex, null);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
