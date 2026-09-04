@@ -1,0 +1,573 @@
+{
+  "info": {
+    "_postman_id": "f9377882-4653-4810-ab77-4cd360ebfd6c",
+    "name": "Random Bank Customer Onboarding API",
+    "description": "Remote registration, login and account overview for Random Bank customers",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57738652",
+    "_collection_link": "https://go.postman.co/collection/57738652-f9377882-4653-4810-ab77-4cd360ebfd6c?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "v1",
+          "item": [
+            {
+              "name": "register",
+              "item": [
+                {
+                  "name": "Register a customer",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "*/*"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"address\": {\n    \"city\": \"Amsterdam\",\n    \"countryCode\": \"NL\",\n    \"houseNumber\": \"159A\",\n    \"postalCode\": \"1131AB\",\n    \"street\": \"Appelstraat\"\n  },\n  \"dateOfBirth\": \"1990-01-01\",\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"username\": \"JSmith\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/register",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "register"
+                      ]
+                    },
+                    "description": "Registers a customer with personal details and address, generates a password, and opens a CURRENT account with a Dutch IBAN. Only customers from allowed countries (NL, BE) aged 18 or older may register."
+                  },
+                  "response": [
+                    {
+                      "name": "Customer registered, credentials returned",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "*/*"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"address\": {\n    \"city\": \"Amsterdam\",\n    \"countryCode\": \"NL\",\n    \"houseNumber\": \"159A\",\n    \"postalCode\": \"1131AB\",\n    \"street\": \"Appelstraat\"\n  },\n  \"dateOfBirth\": \"1990-01-01\",\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"username\": \"JSmith\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "register"
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "*/*"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"customerId\": \"6f1c2a4e-9b3d-4c5a-8e7f-1a2b3c4d5e6f\",\n  \"username\": \"JSmith\",\n  \"password\": \"string\"\n}"
+                    },
+                    {
+                      "name": "Validation failed (missing fields, underage, malformed input)",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "*/*"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"address\": {\n    \"city\": \"Amsterdam\",\n    \"countryCode\": \"NL\",\n    \"houseNumber\": \"159A\",\n    \"postalCode\": \"1131AB\",\n    \"street\": \"Appelstraat\"\n  },\n  \"dateOfBirth\": \"1990-01-01\",\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"username\": \"JSmith\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "register"
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "*/*"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"timestamp\": \"2026-09-03T10:15:30Z\",\n  \"status\": 400,\n  \"error\": \"Invalid request\",\n  \"traceId\": \"1c3d8a2e-9b0f-4f7e-8d2a-2b1c9e7f4a55\",\n  \"errors\": {\n    \"dateOfBirth\": [\n      \"customer must be at least 18 years old\"\n    ]\n  }\n}"
+                    },
+                    {
+                      "name": "Username already taken",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "*/*"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"address\": {\n    \"city\": \"Amsterdam\",\n    \"countryCode\": \"NL\",\n    \"houseNumber\": \"159A\",\n    \"postalCode\": \"1131AB\",\n    \"street\": \"Appelstraat\"\n  },\n  \"dateOfBirth\": \"1990-01-01\",\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"username\": \"JSmith\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "register"
+                          ]
+                        }
+                      },
+                      "status": "Conflict",
+                      "code": 409,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "*/*"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"timestamp\": \"2026-09-03T10:15:30Z\",\n  \"status\": 400,\n  \"error\": \"Invalid request\",\n  \"traceId\": \"1c3d8a2e-9b0f-4f7e-8d2a-2b1c9e7f4a55\",\n  \"errors\": {\n    \"dateOfBirth\": [\n      \"customer must be at least 18 years old\"\n    ]\n  }\n}"
+                    },
+                    {
+                      "name": "Country not allowed",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "*/*"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"address\": {\n    \"city\": \"Amsterdam\",\n    \"countryCode\": \"NL\",\n    \"houseNumber\": \"159A\",\n    \"postalCode\": \"1131AB\",\n    \"street\": \"Appelstraat\"\n  },\n  \"dateOfBirth\": \"1990-01-01\",\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"username\": \"JSmith\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "register"
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "*/*"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"timestamp\": \"2026-09-03T10:15:30Z\",\n  \"status\": 400,\n  \"error\": \"Invalid request\",\n  \"traceId\": \"1c3d8a2e-9b0f-4f7e-8d2a-2b1c9e7f4a55\",\n  \"errors\": {\n    \"dateOfBirth\": [\n      \"customer must be at least 18 years old\"\n    ]\n  }\n}"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "login",
+              "item": [
+                {
+                  "name": "Log in",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "*/*"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"password\": \"string\",\n  \"username\": \"JSmith\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "login"
+                      ]
+                    },
+                    "description": "Authenticates with username and the password issued at registration; returns a JWT."
+                  },
+                  "response": [
+                    {
+                      "name": "Authenticated, token returned",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "*/*"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"password\": \"string\",\n  \"username\": \"JSmith\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "login"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "*/*"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"token\": \"string\"\n}"
+                    },
+                    {
+                      "name": "Missing fields",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "*/*"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"password\": \"string\",\n  \"username\": \"JSmith\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "login"
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "*/*"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"timestamp\": \"2026-09-03T10:15:30Z\",\n  \"status\": 400,\n  \"error\": \"Invalid request\",\n  \"traceId\": \"1c3d8a2e-9b0f-4f7e-8d2a-2b1c9e7f4a55\",\n  \"errors\": {\n    \"dateOfBirth\": [\n      \"customer must be at least 18 years old\"\n    ]\n  }\n}"
+                    },
+                    {
+                      "name": "Invalid credentials",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "*/*"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"password\": \"string\",\n  \"username\": \"JSmith\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "login"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "*/*"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"timestamp\": \"2026-09-03T10:15:30Z\",\n  \"status\": 400,\n  \"error\": \"Invalid request\",\n  \"traceId\": \"1c3d8a2e-9b0f-4f7e-8d2a-2b1c9e7f4a55\",\n  \"errors\": {\n    \"dateOfBirth\": [\n      \"customer must be at least 18 years old\"\n    ]\n  }\n}"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "overview",
+              "item": [
+                {
+                  "name": "Get account overview",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "*/*"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/overview",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "overview"
+                      ]
+                    },
+                    "description": "Returns the authenticated customer's accounts with IBAN, type, balance and currency. Requires the JWT issued at login."
+                  },
+                  "response": [
+                    {
+                      "name": "Account overview returned",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "*/*"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/overview",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "overview"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "*/*"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"accounts\": [\n    {\n      \"iban\": \"NL91RBNK0417164300\",\n      \"accountType\": \"CURRENT\",\n      \"balance\": 0,\n      \"currency\": \"EUR\"\n    },\n    {\n      \"iban\": \"NL91RBNK0417164300\",\n      \"accountType\": \"CURRENT\",\n      \"balance\": 0,\n      \"currency\": \"EUR\"\n    }\n  ]\n}"
+                    },
+                    {
+                      "name": "Missing or invalid token",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "*/*"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/overview",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "overview"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "*/*"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"accounts\": [\n    {\n      \"iban\": \"NL91RBNK0417164300\",\n      \"accountType\": \"CURRENT\",\n      \"balance\": 0,\n      \"currency\": \"EUR\"\n    },\n    {\n      \"iban\": \"NL91RBNK0417164300\",\n      \"accountType\": \"CURRENT\",\n      \"balance\": 0,\n      \"currency\": \"EUR\"\n    }\n  ]\n}"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ]
+}
