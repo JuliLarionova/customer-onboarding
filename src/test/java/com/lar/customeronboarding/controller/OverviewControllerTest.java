@@ -42,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "app.security.jwt.time-to-live=15m",
         "app.rate-limit.enabled=false",
         "app.rate-limit.capacity=1000",
+        "app.rate-limit.refill-tokens=1000",
         "app.rate-limit.refill-period=1s"
 })
 class OverviewControllerTest {
