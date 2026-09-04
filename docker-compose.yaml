@@ -18,5 +18,16 @@ services:
       start_period: 5s
     restart: unless-stopped
 
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/customer_onboarding
+      JWT_SECRET: 0123456789abcdef0123456789abcdef
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   postgres-data:
