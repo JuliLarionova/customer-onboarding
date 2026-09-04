@@ -1,6 +1,6 @@
 package com.lar.customeronboarding.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.lar.customeronboarding.exception.error.ApiError;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import lombok.RequiredArgsConstructor;

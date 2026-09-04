@@ -1,6 +1,6 @@
 package com.lar.customeronboarding.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,9 +25,8 @@ class RateLimitFilterTest {
 
     @BeforeEach
     void setUp() {
-        var objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         filter = new RateLimitFilter(
-                new RateLimitProperties(true, 2, 2, Duration.ofSeconds(1)), objectMapper);
+                new RateLimitProperties(true, 2, 2, Duration.ofSeconds(1)), new ObjectMapper());
     }
 
     @Test

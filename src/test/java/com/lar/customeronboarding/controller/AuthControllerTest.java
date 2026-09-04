@@ -1,5 +1,6 @@
 package com.lar.customeronboarding.controller;
 
+import com.lar.customeronboarding.config.RateLimitProperties;
 import com.lar.customeronboarding.exception.custom.InvalidCredentialsException;
 import com.lar.customeronboarding.security.AuthService;
 import com.lar.customeronboarding.security.JwtProperties;
@@ -29,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AuthController.class)
 @Import(SecurityConfig.class)
-@EnableConfigurationProperties(JwtProperties.class)
+@EnableConfigurationProperties({JwtProperties.class, RateLimitProperties.class})
 @TestPropertySource(properties = {
         "app.security.jwt.secret=" + CustomerTestDataProvider.JWT_TEST_SECRET,
         "app.security.jwt.time-to-live=15m",

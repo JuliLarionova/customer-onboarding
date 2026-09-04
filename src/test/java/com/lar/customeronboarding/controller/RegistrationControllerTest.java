@@ -1,5 +1,6 @@
 package com.lar.customeronboarding.controller;
 
+import com.lar.customeronboarding.config.RateLimitProperties;
 import com.lar.customeronboarding.dto.CustomerDto;
 import com.lar.customeronboarding.exception.custom.CountryNotAllowedException;
 import com.lar.customeronboarding.exception.custom.UsernameAlreadyExistsException;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(RegistrationController.class)
 @Import({CustomerMapperImpl.class, SecurityConfig.class})
-@EnableConfigurationProperties(JwtProperties.class)
+@EnableConfigurationProperties({JwtProperties.class, RateLimitProperties.class})
 @TestPropertySource(properties = {
         "app.security.jwt.secret=" + CustomerTestDataProvider.JWT_TEST_SECRET,
         "app.security.jwt.time-to-live=15m",

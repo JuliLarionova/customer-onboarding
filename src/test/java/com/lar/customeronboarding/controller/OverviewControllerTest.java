@@ -1,5 +1,6 @@
 package com.lar.customeronboarding.controller;
 
+import com.lar.customeronboarding.config.RateLimitProperties;
 import com.lar.customeronboarding.dto.response.AccountSummary;
 import com.lar.customeronboarding.dto.response.OverviewResponse;
 import com.lar.customeronboarding.enums.AccountType;
@@ -36,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(OverviewController.class)
 @Import({CustomerMapperImpl.class, SecurityConfig.class})
-@EnableConfigurationProperties(JwtProperties.class)
+@EnableConfigurationProperties({JwtProperties.class, RateLimitProperties.class})
 @TestPropertySource(properties = {
         "app.security.jwt.secret=" + CustomerTestDataProvider.JWT_TEST_SECRET,
         "app.security.jwt.time-to-live=15m",

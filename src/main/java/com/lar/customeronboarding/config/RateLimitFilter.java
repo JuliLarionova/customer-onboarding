@@ -1,6 +1,6 @@
 package com.lar.customeronboarding.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.lar.customeronboarding.exception.error.ApiError;
 import io.github.bucket4j.Bucket;
 import jakarta.servlet.FilterChain;
