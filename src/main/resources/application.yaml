@@ -4,10 +4,10 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/customer_onboarding
-    username: customer_onboarding_app
-    password: localdev
+    username: ${DB_USERNAME:customer_onboarding_app}
+    password: ${DB_PASSWORD:localdev}
     hikari:
-      maximum-pool-size: 2
+      maximum-pool-size: 5
       connection-timeout: 3000
 
   jpa:
@@ -23,7 +23,7 @@ server:
 
 logging:
   level:
-    com.lar.customeronboarding: DEBUG
+    com.lar.customeronboarding: INFO
 
 app:
   registration:
@@ -34,3 +34,19 @@ app:
     jwt:
       secret: ${JWT_SECRET:0123456789abcdef0123456789abcdef}
       time-to-live: 15m
+  rate-limit:
+    enabled: true
+    capacity: 10
+    refill-tokens: 2
+    refill-period: 1s
+
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never

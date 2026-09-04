@@ -9,3 +9,10 @@ logging:
   level:
     org.testcontainers: warn
     liquibase: warn
+
+app:
+  rate-limit:
+    enabled: false
+    capacity: 1000
+    refill-tokens: 1000
+    refill-period: 1s

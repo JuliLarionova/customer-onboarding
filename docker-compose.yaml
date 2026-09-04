@@ -19,6 +19,7 @@ services:
     restart: unless-stopped
 
   app:
+    container_name: customer-onboarding-app
     build: .
     ports:
       - "8080:8080"
@@ -28,6 +29,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    restart: unless-stopped
 
 volumes:
   postgres-data:

@@ -36,7 +36,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @EnableConfigurationProperties(JwtProperties.class)
 @TestPropertySource(properties = {
         "app.security.jwt.secret=" + CustomerTestDataProvider.JWT_TEST_SECRET,
-        "app.security.jwt.time-to-live=15m"
+        "app.security.jwt.time-to-live=15m",
+        "app.rate-limit.enabled=false",
+        "app.rate-limit.capacity=1000",
+        "app.rate-limit.refill-tokens=1000",
+        "app.rate-limit.refill-period=1s"
 })
 class RegistrationControllerTest {
 
