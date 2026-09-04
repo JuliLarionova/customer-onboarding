@@ -12,7 +12,6 @@ import java.util.Set;
 public record RegistrationProperties(
 
         @NotEmpty
-        Set<@Pattern(regexp = "^[A-Z]{2}$") String>
-        allowedCountries
-
-) {}
+        Set<@Pattern(regexp = "^[A-Z]{2}$") String> allowedCountries
+) {
+}
