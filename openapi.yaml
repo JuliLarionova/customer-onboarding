@@ -1,0 +1,301 @@
+openapi: 3.1.0
+info:
+  title: Random Bank Customer Onboarding API
+  description: "Remote registration, login and account overview for Random Bank customers"
+  version: v1
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Registration
+  description: Customer registration and account opening
+- name: Overview
+  description: Account overview for the authenticated customer
+- name: Authentication
+  description: Customer login
+paths:
+  /api/v1/register:
+    post:
+      tags:
+      - Registration
+      summary: Register a customer
+      description: "Registers a customer with personal details and address, generates\
+        \ a password, and opens a CURRENT account with a Dutch IBAN. Only customers\
+        \ from allowed countries (NL, BE) aged 18 or older may register."
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterCustomerRequest"
+        required: true
+      responses:
+        "201":
+          description: "Customer registered, credentials returned"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RegisterCustomerResponse"
+        "400":
+          description: "Validation failed (missing fields, underage, malformed input)"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "409":
+          description: Username already taken
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "422":
+          description: Country not allowed
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+  /api/v1/login:
+    post:
+      tags:
+      - Authentication
+      summary: Log in
+      description: Authenticates with username and the password issued at registration;
+        returns a JWT.
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: "Authenticated, token returned"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          description: Missing fields
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "401":
+          description: Invalid credentials
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+  /api/v1/overview:
+    get:
+      tags:
+      - Overview
+      summary: Get account overview
+      description: "Returns the authenticated customer's accounts with IBAN, type,\
+        \ balance and currency. Requires the JWT issued at login."
+      operationId: overview
+      responses:
+        "200":
+          description: Account overview returned
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/OverviewResponse"
+        "401":
+          description: Missing or invalid token
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/OverviewResponse"
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    AddressRequest:
+      type: object
+      description: Residential address of the customer
+      properties:
+        street:
+          type: string
+          description: Street name
+          example: Appelstraat
+          maxLength: 150
+          minLength: 0
+        houseNumber:
+          type: string
+          description: "House number, including suffixes"
+          example: 159A
+          maxLength: 20
+          minLength: 0
+        postalCode:
+          type: string
+          description: Postal code
+          example: 1131AB
+          maxLength: 20
+          minLength: 0
+        city:
+          type: string
+          description: City
+          example: Amsterdam
+          maxLength: 100
+          minLength: 0
+        countryCode:
+          type: string
+          description: Two-letter uppercase ISO 3166-1 country code
+          example: NL
+          minLength: 1
+          pattern: "^[A-Z]{2}$"
+      required:
+      - city
+      - countryCode
+      - houseNumber
+      - postalCode
+      - street
+    RegisterCustomerRequest:
+      type: object
+      description: Fields required to register a customer and open an account
+      properties:
+        username:
+          type: string
+          description: Unique username chosen by the customer
+          example: JSmith
+          maxLength: 50
+          minLength: 3
+          pattern: "^[a-zA-Z0-9._-]+$"
+        firstName:
+          type: string
+          description: Customer's first name
+          example: Jane
+          maxLength: 100
+          minLength: 0
+        lastName:
+          type: string
+          description: Customer's last name
+          example: Smith
+          maxLength: 100
+          minLength: 0
+        dateOfBirth:
+          type: string
+          format: date
+          description: Date of birth; customer must be at least 18
+          example: 1990-01-01
+        address:
+          $ref: "#/components/schemas/AddressRequest"
+          description: Residential address; registration is limited to allowed countries
+      required:
+      - address
+      - dateOfBirth
+      - firstName
+      - lastName
+      - username
+    ApiError:
+      type: object
+      description: Standard error response returned to the client
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: When the error occurred
+          example: 2026-09-03T10:15:30Z
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 400
+        error:
+          type: string
+          description: "Generic, client-safe message"
+          example: Invalid request
+        traceId:
+          type: string
+          description: Correlation id that matches the server log
+          example: 1c3d8a2e-9b0f-4f7e-8d2a-2b1c9e7f4a55
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Field-level validation errors; present only for 400 validation
+            failures
+          example:
+            dateOfBirth:
+            - customer must be at least 18 years old
+    RegisterCustomerResponse:
+      type: object
+      description: Credentials returned once after successful registration
+      properties:
+        customerId:
+          type: string
+          format: uuid
+          description: Identifier of the newly registered customer
+          example: 6f1c2a4e-9b3d-4c5a-8e7f-1a2b3c4d5e6f
+        username:
+          type: string
+          description: The registered username
+          example: JSmith
+        password:
+          type: string
+          description: Generated plaintext password; returned only in this response
+            and never retrievable again
+    LoginRequest:
+      type: object
+      description: Credentials for logging in
+      properties:
+        username:
+          type: string
+          example: JSmith
+          minLength: 1
+        password:
+          type: string
+          description: Password issued at registration
+          minLength: 1
+      required:
+      - password
+      - username
+    LoginResponse:
+      type: object
+      description: Issued bearer token
+      properties:
+        token:
+          type: string
+          description: "JWT to send as 'Authorization: Bearer <token>'"
+    AccountSummary:
+      type: object
+      description: Summary of one account
+      properties:
+        iban:
+          type: string
+          description: IBAN of the account
+          example: NL91RBNK0417164300
+        accountType:
+          type: string
+          description: Account type
+          enum:
+          - CURRENT
+          - SAVINGS
+          example: CURRENT
+        balance:
+          type: number
+          description: Current balance
+          example: 0.0
+        currency:
+          type: string
+          description: Account currency
+          enum:
+          - EUR
+          example: EUR
+    OverviewResponse:
+      type: object
+      description: Account overview for the authenticated customer
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/AccountSummary"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
